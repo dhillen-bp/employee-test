@@ -2,11 +2,11 @@
 
 @section('content')
     <div class="my-10">
-        <h1 class="my-4 text-3xl font-bold">DATA DEPARTMENT</h1>
+        <h1 class="my-4 text-3xl font-bold">DATA POSITION</h1>
         <nav class="flex" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 rtl:space-x-reverse md:space-x-2">
                 <li class="inline-flex items-center">
-                    <a href="{{ route('department.index') }}"
+                    <a href="{{ route('position.index') }}"
                         class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
                         <svg class="me-0.5 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 20 20">
@@ -26,7 +26,7 @@
                                 d="m1 9 4-4-4-4" />
                         </svg>
                         <span class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400 md:ms-2">Data
-                            Department</span>
+                            Position</span>
                     </div>
                 </li>
             </ol>
@@ -35,20 +35,20 @@
 
     <div class="mt-8 pb-4">
         <div class="mb-2 flex justify-between">
-            <h3 class="mb-2 text-xl font-bold">Tabel Data Department</h3>
+            <h3 class="mb-2 text-xl font-bold">Tabel Data Position </h3>
         </div>
 
         <div class="relative overflow-x-auto sm:rounded-lg">
             <div class="flex-column flex flex-wrap items-center justify-between space-y-4 pb-4 sm:flex-row sm:space-y-0">
 
-                <a href="{{ route('department.create') }}"
+                <a href="{{ route('position.create') }}"
                     class="text- mb-2 me-2 flex items-center justify-center rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
                     <span>
                         @include('partials.icons._plus-icons', [
                             'class' => 'h-5 w-5 text-white',
                         ])
                     </span>
-                    Create Department</a>
+                    Create Position</a>
 
             </div>
             <table class="mt-2 w-full text-left text-sm text-gray-500 rtl:text-right" id="data-table">
@@ -66,6 +66,11 @@
                         </th>
                         <th scope="col" class="px-6 py-3">
                             <span class="flex items-center">
+                                Position @include('partials.icons._sort-icon')
+                            </span>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="flex items-center">
                                 Desc @include('partials.icons._sort-icon')
                             </span>
                         </th>
@@ -75,22 +80,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($departments as $department)
+                    @foreach ($positions as $position)
                         <tr class="text-gray-900 odd:bg-white even:bg-blue-50 hover:bg-gray-50 even:hover:bg-blue-100">
                             <th class="px-6 py-4">
                                 {{ $loop->iteration }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ $department->name }}
+                                {{ $position->name }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $department->description }}
+                                {{ $position->department->name }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $position->description }}
                             </td>
                             <td class="flex justify-between px-6 py-4">
-                                <a href="{{ route('department.edit', $department->id) }}"
+                                <a href="{{ route('position.edit', $position->id) }}"
                                     class="rounded-lg bg-yellow-400 px-3 py-2 text-center text-xs font-medium text-white hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-900">Edit</a>
 
-                                <button data-id="{{ $department->id }}" data-name="{{ $department->name }}"
+                                <button data-id="{{ $position->id }}" data-name="{{ $position->name }}"
                                     data-modal-toggle="delete-modal" data-modal-target="delete-modal"
                                     data-target="#delete-modal"
                                     class="rounded-lg bg-red-700 px-3 py-2 text-center text-xs font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
@@ -133,7 +141,7 @@
                             modalBody.innerHTML = `Are you sure delete data <strong>${name}</strong>?`;
                         }
                         modal.querySelector('form').setAttribute('action',
-                            `/department/destroy/${id}`);
+                            `/position/destroy/${id}`);
                         modal.classList.remove('hidden');
                     }
                 }

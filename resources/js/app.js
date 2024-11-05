@@ -3,14 +3,19 @@ import "flowbite";
 
 import jQuery from "jquery";
 window.$ = jQuery;
+
 import "jquery-validation";
+
+import select2 from 'select2';
+select2($);
+
 import { DataTable } from "simple-datatables";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const departmentTable = document.getElementById("department-table");
-    if (departmentTable) {
+    const isDataTable = document.getElementById("data-table");
+    if (isDataTable) {
         // Inisialisasi tabel dengan DataTable
-        const dataTable = new DataTable(departmentTable, {
+        const dataTable = new DataTable(isDataTable, {
             searchable: true,
             sortable: true,
             paging: true,
@@ -19,5 +24,4 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-
 
