@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('position_id')->constrained()->cascadeOnDelete();
             $table->decimal('salary', 10, 2)->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }
