@@ -228,7 +228,7 @@ class EmployeeController extends Controller
     // API
     public function showAllEmployee()
     {
-        $employees = Employee::with('position.department')->paginate(10);
+        $employees = Employee::with('position.department')->get();
         // return response()->json(['data' => $employees]);
         return EmployeeResource::collection($employees);
     }
