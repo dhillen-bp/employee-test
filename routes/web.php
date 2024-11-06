@@ -47,8 +47,14 @@ Route::prefix('position')->name('position.')->group(function () {
 Route::prefix('employee')->name('employee.')->group(function () {
     Route::get('/', [EmployeeController::class, 'index'])->name('index');
     Route::get('/create', [EmployeeController::class, 'create'])->name('create');
+    Route::get('/show/{id}', [EmployeeController::class, 'show'])->name('show');
     Route::post('/store', [EmployeeController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('edit');
     Route::patch('/update/{id}', [EmployeeController::class, 'update'])->name('update');
     Route::delete('/destroy/{id}', [EmployeeController::class, 'destroy'])->name('destroy');
+
+    Route::post('/upload', [EmployeeController::class, 'upload'])->name('upload');
+    Route::delete('/revert', [EmployeeController::class, 'revert'])->name('revert');
 });
+
+// Route::resource('employee', EmployeeController::class);

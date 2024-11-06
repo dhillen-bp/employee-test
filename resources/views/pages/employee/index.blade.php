@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="my-10">
-        <h1 class="my-4 text-3xl font-bold">DATA POSITION</h1>
+        <h1 class="my-4 text-3xl font-bold">DATA EMPLOYEE</h1>
         <nav class="flex" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 rtl:space-x-reverse md:space-x-2">
                 <li class="inline-flex items-center">
@@ -26,7 +26,7 @@
                                 d="m1 9 4-4-4-4" />
                         </svg>
                         <span class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400 md:ms-2">Data
-                            Position</span>
+                            Employee</span>
                     </div>
                 </li>
             </ol>
@@ -35,20 +35,20 @@
 
     <div class="mt-8 pb-4">
         <div class="mb-2 flex justify-between">
-            <h3 class="mb-2 text-xl font-bold">Tabel Data Position </h3>
+            <h3 class="mb-2 text-xl font-bold">Tabel Data Employee </h3>
         </div>
 
         <div class="relative overflow-x-auto sm:rounded-lg">
             <div class="flex-column flex flex-wrap items-center justify-between space-y-4 pb-4 sm:flex-row sm:space-y-0">
 
-                <a href="{{ route('position.create') }}"
+                <a href="{{ route('employee.create') }}"
                     class="text- mb-2 me-2 flex items-center justify-center rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
                     <span>
                         @include('partials.icons._plus-icons', [
                             'class' => 'h-5 w-5 text-white',
                         ])
                     </span>
-                    Create Position</a>
+                    Create Employee</a>
 
             </div>
             <table class="mt-2 w-full text-left text-sm text-gray-500 rtl:text-right" id="data-table">
@@ -58,6 +58,9 @@
                             <span class="flex items-center">
                                 No @include('partials.icons._sort-icon')
                             </span>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Photo
                         </th>
                         <th scope="col" class="px-6 py-3">
                             <span class="flex items-center">
@@ -71,7 +74,12 @@
                         </th>
                         <th scope="col" class="px-6 py-3">
                             <span class="flex items-center">
-                                Desc @include('partials.icons._sort-icon')
+                                Hire Data @include('partials.icons._sort-icon')
+                            </span>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="flex items-center">
+                                Status @include('partials.icons._sort-icon')
                             </span>
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -80,25 +88,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($positions as $position)
+                    @foreach ($employees as $employee)
                         <tr class="text-gray-900 odd:bg-white even:bg-blue-50 hover:bg-gray-50 even:hover:bg-blue-100">
                             <th class="px-6 py-4">
                                 {{ $loop->iteration }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ $position->name }}
+                                <img class="h-10 w-10 rounded-full"
+                                    src="{{ $employee->photo ? Storage::url('images/employee/' . $employee->photo) : asset('images/profile/user_profile.jpeg') }}"
+                                    alt="Employee photo">
                             </td>
                             <td class="px-6 py-4">
-                                {{ $position->department->name }}
+                                {{ $employee->name }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $position->description }}
+                                {{ $employee->position->name }} - {{ $employee->position->department->name }}
                             </td>
-                            <td class="flex justify-between px-6 py-4">
-                                <a href="{{ route('position.edit', $position->id) }}"
+                            <td class="px-6 py-4">
+                                {{ $employee->hire_date }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span
+                                    class="{{ $employee->status == 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'dark:bg-red-900 dark:text-red-300 bg-red-100 text-red-800' }} me-2 rounded-full px-2.5 py-0.5 text-xs font-medium">{{ $employee->status }}</span>
+                            </td>
+                            <td class="flex justify-between gap-2 px-6 py-4">
+                                <button data-id="{{ $employee->id }}" data-modal-toggle="detail-modal"
+                                    data-modal-target="detail-modal" data-target="#detail-modal"
+                                    class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+                                    Detail
+                                </button>
+                                <a href="{{ route('employee.edit', $employee->id) }}"
                                     class="rounded-lg bg-yellow-400 px-3 py-2 text-center text-xs font-medium text-white hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-900">Edit</a>
-
-                                <button data-id="{{ $position->id }}" data-name="{{ $position->name }}"
+                                <button data-id="{{ $employee->id }}" data-name="{{ $employee->name }}"
                                     data-modal-toggle="delete-modal" data-modal-target="delete-modal"
                                     data-target="#delete-modal"
                                     class="rounded-lg bg-red-700 px-3 py-2 text-center text-xs font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
@@ -110,6 +131,8 @@
 
                         <!-- Modal HTML -->
                         @component('layouts._modal_delete_datatables')
+                        @endcomponent
+                        @component('layouts._modal_detail_employee')
                         @endcomponent
                     @endforeach
                 </tbody>
@@ -127,21 +150,18 @@
                     const button = event.target;
                     const id = button.getAttribute('data-id');
                     const name = button.getAttribute('data-name');
-                    // Ambil data-target tanpa tanda #
+
                     const targetSelector = button.getAttribute('data-target');
                     const modal = document.querySelector(targetSelector);
 
-                    console.log(name); // Untuk debugging
-
                     if (modal) {
-                        console.log("modal ", name);
                         const modalBody = modal.querySelector('.modal-body');
                         if (modalBody) {
-                            // Menggunakan innerHTML untuk memasukkan HTML
+
                             modalBody.innerHTML = `Are you sure delete data <strong>${name}</strong>?`;
                         }
                         modal.querySelector('form').setAttribute('action',
-                            `/position/destroy/${id}`);
+                            `/employee/destroy/${id}`);
                         modal.classList.remove('hidden');
                     }
                 }
@@ -151,6 +171,36 @@
                     modals.forEach(modal => modal.classList.add('hidden'));
                 }
             });
+
+            document.addEventListener('click', async (event) => {
+                if (event.target.matches('[data-modal-toggle="detail-modal"]')) {
+                    const button = event.target;
+                    const id = button.getAttribute('data-id');
+
+                    try {
+                        const response = await fetch(`/employee/show/${id}`);
+                        const data = await response.json();
+
+                        document.querySelector('#detail-modal #name').textContent = data.name;
+                        document.querySelector('#detail-modal #email').textContent = data.email;
+                        document.querySelector('#detail-modal #phone').textContent = data.phone;
+                        document.querySelector('#detail-modal #address').textContent = data.address;
+                        document.querySelector('#detail-modal #position').textContent = data.position;
+                        document.querySelector('#detail-modal #department').textContent = data
+                            .department;
+                        document.querySelector('#detail-modal #hire_date').textContent = data.hire_date;
+                        document.querySelector('#detail-modal #status').textContent = data.status;
+                        document.querySelector('#detail-modal #salary').textContent = data.salary;
+
+                        document.querySelector('#detail-modal img').src = data.photo;
+
+                        document.querySelector('#detail-modal').classList.remove('hidden');
+                    } catch (error) {
+                        console.error("Error fetching employee details:", error);
+                    }
+                }
+            });
+
         });
     </script>
 @endpush
