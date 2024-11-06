@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use App\Models\Position;
 use Carbon\Carbon;
@@ -71,6 +72,7 @@ class EmployeeController extends Controller
         // Handle file upload for photo
         if ($validated['photo']) {
             $newFilename = Str::after($validated['photo'], 'tmp/');
+            // dd($validated['photo']);
             Storage::disk('public')->move($validated['photo'], "images/employee/$newFilename");
             $validated['photo'] = $newFilename;
         }
@@ -201,16 +203,16 @@ class EmployeeController extends Controller
     public function upload(Request $request)
     {
         // Validasi file
-        $validated = $request->validate([
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        // $validated = $request->validate([
+        //     'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        // ]);
 
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('images/employee', $filename, 'public');
+            $filename = now()->timestamp . '-' . Str::random(20) . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('tmp', $filename, 'public');
 
-            return response()->json(['path' => Storage::url($path)]);
+            return $path;
         }
 
         return response()->json(['error' => 'No file uploaded'], 400);
@@ -220,5 +222,14 @@ class EmployeeController extends Controller
     public function revert(Request $request)
     {
         Storage::disk('public')->delete($request->getContent());
+    }
+
+
+    // API
+    public function showAllEmployee()
+    {
+        $employees = Employee::with('position.department')->paginate(10);
+        // return response()->json(['data' => $employees]);
+        return EmployeeResource::collection($employees);
     }
 }

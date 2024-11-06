@@ -43,6 +43,7 @@
         <form method="POST" action="{{ route('employee.update', $employee->id) }}" id="form-employee"
             enctype="multipart/form-data" class="mx-auto w-full rounded-lg bg-slate-50 p-4 md:col-span-3">
             @csrf
+            @method('PATCH')
             <div class="mb-5">
                 <label for="name"
                     class="{{ $errors->has('name') ? 'text-red-900' : 'text-gray-900' }} mb-2 block text-sm font-medium">
@@ -256,12 +257,13 @@
                             return res.blob();
                         }).then(load);
                     },
-                    process: '{{ route('employee.upload') }}',
-                    revert: '{{ route('employee.revert') }}',
+                    process: "{{ route('employee.upload') }}",
+                    revert: "{{ route('employee.revert') }}",
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     }
                 },
+                allowMultiple: false,
                 files: photoSource ? [{
                     source: photoSource,
                     options: {

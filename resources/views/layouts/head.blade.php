@@ -4,4 +4,6 @@
 
 <title>@yield('title', 'Employee Web') </title>
 
-@vite(['resources/css/app.css', 'resources/css/select2.min.css', 'resources/js/app.js'])
+<link rel="stylesheet" href="{{ asset('assets/css/select2.min.css') }}">
+
+@vite(['resources/css/app.css', 'resources/js/app.js'])
